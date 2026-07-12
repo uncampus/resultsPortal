@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="UN Campus examination results administration portal" />
+  <title>UN Campus | Admin Results Portal</title>
+  <link rel="icon" href="assets/un-campus-logo.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="admin-page">
+  <div class="page-orb orb-one" aria-hidden="true"></div>
+  <div class="page-orb orb-two" aria-hidden="true"></div>
+
+  <header class="site-header glass">
+    <a class="brand" href="index.html" aria-label="UN Campus Results Portal home">
+      <img src="assets/un-campus-logo.png" alt="UN Campus logo" />
+      <span>
+        <strong>UN CAMPUS</strong>
+        <small>Results Administration</small>
+      </span>
+    </a>
+
+    <div class="header-tools">
+      <div class="live-clock" aria-live="polite">
+        <span class="clock-dot"></span>
+        <span id="liveDateTime">Loading date & time…</span>
+      </div>
+      <button class="icon-button" id="themeToggle" type="button" aria-label="Toggle dark and light mode" title="Toggle theme">
+        <span class="theme-icon">☾</span>
+      </button>
+      <a class="button button-secondary compact" href="index.html">Student Portal</a>
+    </div>
+  </header>
+
+  <main class="admin-layout container">
+    <aside class="admin-sidebar glass reveal">
+      <div class="admin-title">
+        <div class="admin-avatar">A</div>
+        <div>
+          <strong>Administrator</strong>
+          <small>Results Management</small>
+        </div>
+      </div>
+      <nav class="admin-nav" aria-label="Admin sections">
+        <button class="nav-tab active" type="button" data-panel="dashboardPanel"><span>▦</span> Dashboard</button>
+        <button class="nav-tab" type="button" data-panel="studentFormPanel"><span>＋</span> Add / Update Student</button>
+        <button class="nav-tab" type="button" data-panel="studentListPanel"><span>☷</span> Manage Students</button>
+        <button class="nav-tab" type="button" data-panel="settingsPanel"><span>⚙</span> Batches & Data</button>
+      </nav>
+      <div class="sidebar-note">
+        <strong>Local Demo Mode</strong>
+        <p>Data is stored in this browser for demonstration.</p>
+      </div>
+    </aside>
+
+    <section class="admin-content">
+      <div class="admin-topline reveal delay-1">
+        <div>
+          <span class="eyebrow">Admin Interface</span>
+          <h1>Results Management Centre</h1>
+          <p>Enter, update, and manage student attendance and examination results.</p>
+        </div>
+        <button class="button button-primary" type="button" id="quickAddBtn">＋ Add Student</button>
+      </div>
+
+      <section class="admin-panel active" id="dashboardPanel">
+        <div class="dashboard-cards">
+          <article class="metric-card glass reveal delay-1">
+            <span class="metric-icon">♟</span>
+            <div><small>Total Students</small><strong id="metricStudents">0</strong></div>
+          </article>
+          <article class="metric-card glass reveal delay-1">
+            <span class="metric-icon">▤</span>
+            <div><small>Active Batches</small><strong id="metricBatches">0</strong></div>
+          </article>
+          <article class="metric-card glass reveal delay-2">
+            <span class="metric-icon">✓</span>
+            <div><small>Passing Students</small><strong id="metricPassed">0</strong></div>
+          </article>
+          <article class="metric-card glass reveal delay-2">
+            <span class="metric-icon">%</span>
+            <div><small>Average Attendance</small><strong id="metricAttendance">0%</strong></div>
+          </article>
+        </div>
+
+        <div class="admin-dashboard-grid">
+          <article class="glass admin-card reveal delay-2">
+            <div class="card-title-row">
+              <div><p class="section-kicker">Latest Entries</p><h3>Recent Students</h3></div>
+              <button class="text-button" type="button" data-go-panel="studentListPanel">View all</button>
+            </div>
+            <div id="recentStudents" class="recent-list"></div>
+          </article>
+
+          <article class="glass admin-card reveal delay-2">
+            <div class="card-title-row">
+              <div><p class="section-kicker">Quick Guide</p><h3>Admin Workflow</h3></div>
+              <span class="mini-icon">i</span>
+            </div>
+            <ol class="workflow-list">
+              <li><span>1</span><p><strong>Create or select a batch.</strong><br />Use the Batches & Data section.</p></li>
+              <li><span>2</span><p><strong>Enter student details.</strong><br />Add attendance and module marks.</p></li>
+              <li><span>3</span><p><strong>Save the result.</strong><br />Students can immediately search it.</p></li>
+            </ol>
+          </article>
+        </div>
+      </section>
+
+      <section class="admin-panel" id="studentFormPanel">
+        <article class="glass form-card">
+          <div class="card-title-row">
+            <div>
+              <p class="section-kicker">Student Record</p>
+              <h2 id="formTitle">Add Student Result</h2>
+            </div>
+            <button class="button button-secondary compact" type="button" id="clearFormBtn">Clear Form</button>
+          </div>
+
+          <form id="studentResultForm" novalidate>
+            <input type="hidden" id="recordId" />
+
+            <div class="form-section">
+              <h3>Personal & Course Details</h3>
+              <div class="form-grid">
+                <label class="field">
+                  <span>Student Name</span>
+                  <input id="adminStudentName" type="text" placeholder="Full name" required />
+                </label>
+                <label class="field">
+                  <span>NIC Number</span>
+                  <input id="adminNic" type="text" placeholder="e.g. 20001234567" maxlength="12" required />
+                </label>
+                <label class="field">
+                  <span>Course</span>
+                  <input id="adminCourse" type="text" placeholder="e.g. Diploma in IT" required />
+                </label>
+                <label class="field">
+                  <span>Batch</span>
+                  <select id="adminBatch" required>
+                    <option value="">Select batch</option>
+                  </select>
+                </label>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h3>Attendance Details</h3>
+              <div class="form-grid three-columns">
+                <label class="field">
+                  <span>Total Days</span>
+                  <input id="adminTotalDays" type="number" min="0" max="1000" placeholder="120" required />
+                </label>
+                <label class="field">
+                  <span>Present Days</span>
+                  <input id="adminPresentDays" type="number" min="0" max="1000" placeholder="110" required />
+                </label>
+                <label class="field">
+                  <span>Absent Days</span>
+                  <input id="adminAbsentDays" type="number" min="0" max="1000" placeholder="Auto-calculated" readonly />
+                </label>
+              </div>
+              <div class="attendance-preview">
+                <span>Attendance Percentage</span>
+                <strong id="adminAttendancePreview">0%</strong>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <div class="section-heading-row">
+                <div>
+                  <h3>Module-wise Results</h3>
+                  <p>Enter marks from 0 to 100. Grade and pass status are calculated automatically.</p>
+                </div>
+                <button class="button button-secondary compact" type="button" id="addModuleBtn">＋ Add Module</button>
+              </div>
+
+              <div class="module-editor" id="moduleEditor"></div>
+            </div>
+
+            <div class="form-actions">
+              <button class="button button-secondary" type="button" id="cancelEditBtn" hidden>Cancel Edit</button>
+              <button class="button button-primary" type="submit" id="saveStudentBtn">Save Student Result</button>
+            </div>
+          </form>
+        </article>
+      </section>
+
+      <section class="admin-panel" id="studentListPanel">
+        <article class="glass admin-card">
+          <div class="card-title-row list-title-row">
+            <div>
+              <p class="section-kicker">Database</p>
+              <h2>Manage Student Records</h2>
+            </div>
+            <div class="list-filters">
+              <input id="studentFilter" type="search" placeholder="Search name or NIC" aria-label="Search students" />
+              <select id="batchFilter" aria-label="Filter by batch"><option value="">All batches</option></select>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Student</th>
+                  <th>NIC</th>
+                  <th>Batch</th>
+                  <th>Modules</th>
+                  <th>Attendance</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="adminStudentTableBody"></tbody>
+            </table>
+          </div>
+          <div class="empty-state" id="studentEmptyState" hidden>
+            <div>⌕</div>
+            <h3>No student records found</h3>
+            <p>Try a different filter or add a new student record.</p>
+          </div>
+        </article>
+      </section>
+
+      <section class="admin-panel" id="settingsPanel">
+        <div class="settings-grid">
+          <article class="glass admin-card">
+            <div class="card-title-row">
+              <div><p class="section-kicker">Academic Setup</p><h2>Available Batches</h2></div>
+              <span class="mini-icon">▤</span>
+            </div>
+            <form id="batchForm" class="inline-form">
+              <input id="newBatchName" type="text" placeholder="e.g. DIIT 05" required />
+              <button class="button button-primary" type="submit">Add Batch</button>
+            </form>
+            <div id="batchChips" class="batch-chips"></div>
+          </article>
+
+          <article class="glass admin-card">
+            <div class="card-title-row">
+              <div><p class="section-kicker">Backup</p><h2>Data Management</h2></div>
+              <span class="mini-icon">⇄</span>
+            </div>
+            <p class="muted">Export all batches and student records as a JSON backup, or import a previously exported file.</p>
+            <div class="data-buttons">
+              <button class="button button-secondary" id="exportDataBtn" type="button">Export Data</button>
+              <label class="button button-secondary file-button">Import Data<input id="importDataInput" type="file" accept="application/json" hidden /></label>
+              <button class="button button-danger" id="resetDemoBtn" type="button">Reset Demo Data</button>
+            </div>
+          </article>
+        </div>
+
+        <article class="glass admin-card grading-admin-card">
+          <div class="card-title-row">
+            <div><p class="section-kicker">Reference</p><h2>Current Grading Scale</h2></div>
+            <span class="table-note">Pass mark: 45</span>
+          </div>
+          <div class="grade-grid" id="adminGradeScale"></div>
+        </article>
+      </section>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>© <span id="currentYear"></span> UN Campus. All rights reserved.</p>
+  </footer>
+
+  <div class="confirm-modal" id="confirmModal" hidden>
+    <div class="modal-backdrop" data-close-modal></div>
+    <div class="modal-card glass" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+      <div class="modal-icon">!</div>
+      <h2 id="confirmTitle">Confirm action</h2>
+      <p id="confirmMessage">Are you sure?</p>
+      <div class="modal-actions">
+        <button class="button button-secondary" type="button" data-close-modal>Cancel</button>
+        <button class="button button-danger" type="button" id="confirmActionBtn">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-region" id="toastRegion" aria-live="polite" aria-atomic="true"></div>
+  <script src="common.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>

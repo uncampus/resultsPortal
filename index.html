@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="UN Campus student examination results portal" />
+  <title>UN Campus | Student Results Portal</title>
+  <link rel="icon" href="assets/un-campus-logo.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="page-orb orb-one" aria-hidden="true"></div>
+  <div class="page-orb orb-two" aria-hidden="true"></div>
+
+  <header class="site-header glass">
+    <a class="brand" href="index.html" aria-label="UN Campus Results Portal home">
+      <img src="assets/un-campus-logo.png" alt="UN Campus logo" />
+      <span>
+        <strong>UN CAMPUS</strong>
+        <small>Examination Results Portal</small>
+      </span>
+    </a>
+
+    <div class="header-tools">
+      <div class="live-clock" aria-live="polite">
+        <span class="clock-dot"></span>
+        <span id="liveDateTime">Loading date & time…</span>
+      </div>
+      <button class="icon-button" id="themeToggle" type="button" aria-label="Toggle dark and light mode" title="Toggle theme">
+        <span class="theme-icon">☾</span>
+      </button>
+      <a class="button button-secondary compact" href="admin.html">Admin Portal</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero container">
+      <div class="hero-copy reveal">
+        <span class="eyebrow">Official Student Service</span>
+        <h1>Find your examination results securely and instantly.</h1>
+        <p>Select your batch, enter your NIC number, and view your complete result sheet with attendance, module grades, and pass status.</p>
+        <div class="hero-points">
+          <span>✓ Fast search</span>
+          <span>✓ Clear module results</span>
+          <span>✓ Mobile friendly</span>
+        </div>
+      </div>
+
+      <div class="search-card glass reveal delay-1">
+        <div class="card-heading">
+          <div class="heading-icon">⌕</div>
+          <div>
+            <p class="section-kicker">Student Search</p>
+            <h2>Check your result</h2>
+          </div>
+        </div>
+
+        <form id="resultSearchForm" novalidate>
+          <div class="form-grid one-column">
+            <label class="field">
+              <span>Batch</span>
+              <select id="studentBatch" required>
+                <option value="">Select your batch</option>
+              </select>
+              <small>Choose from the currently available batches.</small>
+            </label>
+
+            <label class="field">
+              <span>NIC Number</span>
+              <input id="studentNic" type="text" inputmode="text" autocomplete="off" placeholder="e.g. 20001234567" maxlength="12" required />
+              <small>Enter the NIC exactly as registered with the campus.</small>
+            </label>
+          </div>
+
+          <button class="button button-primary full-width" type="submit">
+            <span>Search Result</span>
+            <span aria-hidden="true">→</span>
+          </button>
+        </form>
+
+        <div class="demo-hint">
+          <strong>Demo:</strong> Batch <b>DIIT 01</b>, NIC <b>20001234567</b>
+        </div>
+      </div>
+    </section>
+
+    <section class="container result-shell" id="resultSection" hidden>
+      <div class="result-header glass reveal">
+        <div>
+          <span class="eyebrow success-eyebrow">Result Found</span>
+          <h2>Official Examination Result</h2>
+          <p>Generated from the UN Campus results database.</p>
+        </div>
+        <div class="result-actions">
+          <button class="button button-secondary" id="newSearchBtn" type="button">New Search</button>
+          <button class="button button-primary" id="printResultBtn" type="button">Print Result</button>
+        </div>
+      </div>
+
+      <article class="student-profile glass reveal delay-1">
+        <div class="profile-avatar" id="studentInitials">ST</div>
+        <div class="profile-main">
+          <p class="section-kicker">Student Details</p>
+          <h3 id="resultStudentName">Student Name</h3>
+          <div class="profile-meta">
+            <span><small>NIC</small><b id="resultNic">—</b></span>
+            <span><small>Course</small><b id="resultCourse">—</b></span>
+            <span><small>Batch</small><b id="resultBatch">—</b></span>
+          </div>
+        </div>
+        <div class="overall-badge" id="overallBadge">
+          <small>Overall Status</small>
+          <strong id="overallStatus">PASS</strong>
+        </div>
+      </article>
+
+      <div class="result-grid">
+        <article class="attendance-card glass reveal delay-1">
+          <div class="card-title-row">
+            <div>
+              <p class="section-kicker">Attendance</p>
+              <h3>Attendance Details</h3>
+            </div>
+            <span class="mini-icon">◷</span>
+          </div>
+
+          <div class="attendance-content">
+            <div class="attendance-ring" id="attendanceRing" style="--attendance: 0">
+              <div>
+                <strong id="attendancePercentage">0%</strong>
+                <span>Present</span>
+              </div>
+            </div>
+            <div class="attendance-stats">
+              <div><span>Total Days</span><strong id="totalDays">0</strong></div>
+              <div><span>Present</span><strong id="presentDays">0</strong></div>
+              <div><span>Absent</span><strong id="absentDays">0</strong></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="summary-card glass reveal delay-2">
+          <div class="card-title-row">
+            <div>
+              <p class="section-kicker">Performance</p>
+              <h3>Result Summary</h3>
+            </div>
+            <span class="mini-icon">◎</span>
+          </div>
+          <div class="summary-stats">
+            <div><span>Modules</span><strong id="moduleCount">0</strong></div>
+            <div><span>Passed</span><strong id="passedCount">0</strong></div>
+            <div><span>Failed</span><strong id="failedCount">0</strong></div>
+            <div><span>Average</span><strong id="averageMark">0%</strong></div>
+          </div>
+        </article>
+      </div>
+
+      <article class="table-card glass reveal delay-2">
+        <div class="card-title-row table-heading">
+          <div>
+            <p class="section-kicker">Academic Record</p>
+            <h3>Module-wise Results</h3>
+          </div>
+          <span class="table-note">Pass mark: 45</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>S.No</th>
+                <th>Module No</th>
+                <th>Module Name</th>
+                <th>Result</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="moduleResultsBody"></tbody>
+          </table>
+        </div>
+      </article>
+
+      <article class="grading-card glass reveal delay-2">
+        <div class="card-title-row">
+          <div>
+            <p class="section-kicker">Reference</p>
+            <h3>Grading Scale</h3>
+          </div>
+          <span class="mini-icon">A+</span>
+        </div>
+        <div class="grade-grid" id="gradeScale"></div>
+      </article>
+
+      <p class="verification-note">This result is system-generated. For official verification or corrections, contact the UN Campus administration.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>© <span id="currentYear"></span> UN Campus. All rights reserved.</p>
+  </footer>
+
+  <div class="toast-region" id="toastRegion" aria-live="polite" aria-atomic="true"></div>
+  <script src="common.js"></script>
+  <script src="portal.js"></script>
+</body>
+</html>
